@@ -7,18 +7,24 @@
 
 #include <RCSwitch.h>
 
+// Switches
 #define pinA 2
 #define pinB 3
 #define pinC 4
 #define pinD 5
 #define pinE 6
 
+// Buttons
 #define pinOn 7
 #define pinOff 8
 
-#define senderPin 10
-#define powerLedPin 9
-#define sendLedPin 11
+
+//Outputs
+#define senderPin 10 // Data Pin of 433Mhz Sender
+#define powerLedPin 9 // Lights up when device is turned on
+#define sendLedPin 11 // Lights up during transmittion
+
+#define HOUSECODE "11010"
 
 RCSwitch mySwitch = RCSwitch();
 char socketCode[5];
@@ -37,7 +43,8 @@ void setup() {
 
   pinMode(powerLedPin, OUTPUT);
   pinMode(sendLedPin, OUTPUT);
-  
+
+  digitalWrite(powerLedPin, HIGH);
   // Transmitter is connected to Arduino Pin #10
   mySwitch.enableTransmit(senderPin);
 
@@ -59,10 +66,10 @@ void loop() {
 
   if(bOn){
     Serial.println("Will switch on");
-    mySwitch.switchOn("11010", socketCode);
+    mySwitch.switchOn(HOUSECODE, socketCode);
   }else if(bOff){
     Serial.println("Will switch off");
-    mySwitch.switchOff("11010", socketCode);
+    mySwitch.switchOff(HOUSECODE, socketCode);
   }
   if(bOn || bOff){
     delay(1000);
